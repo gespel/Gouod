@@ -6,15 +6,9 @@ from module import *
 
 p = pyaudio.PyAudio()
 
-x: Synth = SquareSynth()
-y: Synth = SineSynth()
-z: Synth = SineSynth()
-v: Synth = SineSynth()
-d: Module = DualSine()
+d: Module = StrangeOne()
 
-y.set_frequency(6)
-z.set_frequency(2)
-v.set_frequency(1)
+
 sampleslist = []
 #np.array([])
 # generate samples, note conversion to float32 array
