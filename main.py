@@ -7,7 +7,12 @@ p = pyaudio.PyAudio()
 
 x: Synth = SineSynth()
 y: Synth = SineSynth()
-y.setFrequency(1200)
+z: Synth = SineSynth()
+v: Synth = SineSynth()
+
+y.setFrequency(6)
+z.setFrequency(2)
+v.setFrequency(100)
 sampleslist = []
 #np.array([])
 # generate samples, note conversion to float32 array
@@ -22,10 +27,19 @@ stream = p.open(format=pyaudio.paFloat32,
 
 while(True):
     samples = np.array([])
+    sampleslist = []
+    for i in range(0,1023):    
+        sampleslist.append(x.getSample())
+        x.setFrequency(abs(y.getSample())*440)
+        y.setFrequency(abs(z.getSample())*2)
+        
+    samples = np.array(sampleslist).astype(np.float32)
+    #samples *= v.getSample()
+    samples *= 0.5
    
-    samples = x.getBuffer()
-    samples += y.getBuffer()
-    samples *= 0.2
+    #samples = x.getBuffer()
+    #samples += y.getBuffer()
+    #samples *= 0.2
     stream.write(samples.tobytes())
 
 stream.stop_stream()
