@@ -1,18 +1,20 @@
 import pyaudio
 import math
 import numpy as np
-from synth import SineSynth, Synth
+from synth import SineSynth, Synth, SquareSynth
+from module import *
 
 p = pyaudio.PyAudio()
 
-x: Synth = SineSynth()
+x: Synth = SquareSynth()
 y: Synth = SineSynth()
 z: Synth = SineSynth()
 v: Synth = SineSynth()
+d: Module = DualSine()
 
-y.setFrequency(6)
-z.setFrequency(2)
-v.setFrequency(100)
+y.set_frequency(6)
+z.set_frequency(2)
+v.set_frequency(1)
 sampleslist = []
 #np.array([])
 # generate samples, note conversion to float32 array
@@ -28,10 +30,12 @@ stream = p.open(format=pyaudio.paFloat32,
 while(True):
     samples = np.array([])
     sampleslist = []
-    for i in range(0,1023):    
-        sampleslist.append(x.getSample())
-        x.setFrequency(abs(y.getSample())*440)
-        y.setFrequency(abs(z.getSample())*2)
+    for i in range(0,1023):
+        sampleslist.append(d.get_sample())
+        #sampleslist.append(x.get_sample())
+        #x.set_frequency(abs(y.get_sample()) * 440)
+        #y.set_frequency(abs(z.get_sample()) * 2)
+        #z.set_frequency(v.get_sample() * 3)
         
     samples = np.array(sampleslist).astype(np.float32)
     #samples *= v.getSample()
