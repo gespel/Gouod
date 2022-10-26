@@ -26,7 +26,7 @@ class SineSynth(Synth):
         self.freq = input
     def getBuffer(self):
         sampleslist = []
-        for i in range(0,1024):
+        for i in range(0,1023):
             
             sampleslist.append(self.getSample())
             #x.setFrequency(abs(y.getSample())*1000)
